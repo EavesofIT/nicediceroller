@@ -123,3 +123,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+nicedice.code-workspace
+config.json

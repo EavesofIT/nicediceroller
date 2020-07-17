@@ -27,8 +27,6 @@ async def on_message(message):
             messagesplit = (message.content.split("/roll")[1]).split("+")[0]
         else:
             messagesplit = (message.content.split("/roll")[1])
-            print("messagesplit")
-            print(messagesplit)
         droll = dice.roll(messagesplit)
         if isinstance(droll, list):
             drollsum = sum(droll)
@@ -43,9 +41,6 @@ async def on_message(message):
             drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
         else:
             drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
-
-
-        print(drollresult)
 
         await channel.send(drollresult)
         

@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 nicedice.code-workspace
 config.json
+.vscode/launch.json

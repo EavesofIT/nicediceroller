@@ -20,24 +20,30 @@ async def on_message(message):
         channel = message.channel
         await channel.send('Rolling dem dice!')
 
+        messageoper = None
 
         if "+" in message.content or "-" in message.content:
             messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
-            messagesplit = (message.content.split("/roll")[1]).split("+")
+            messagesplit = (message.content.split("/roll")[1]).split("+")[0]
+        else:
+            messagesplit = (message.content.split("/roll")[1])
             print("messagesplit")
             print(messagesplit)
-            droll = dice.roll(messagesplit[0])
-            if isinstance(droll, list):
-                drollsum = sum(droll)
-                drollresult = drollsum
-            else:
-                drollresult = droll
-            if messageoper.group() == "-":
-                drollsum = drollresult - int(messagesplit[1])
-            else:
-                drollsum = drollresult + int(messagesplit[1])
-
+        droll = dice.roll(messagesplit)
+        if isinstance(droll, list):
+            drollsum = sum(droll)
+            drollresult = drollsum
+        else:
+            drollresult = droll
+        if "-" in message.content:
+            drollsum = drollresult - int(messagesplit[1])
+        elif "+" in message.content:
+            drollsum = drollresult + int(messagesplit[1])
+        if "+" in message.content or "-" in message.content:
             drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
+        else:
+            drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
+
 
         print(drollresult)
 

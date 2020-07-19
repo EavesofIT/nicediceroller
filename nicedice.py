@@ -22,9 +22,9 @@ async def on_message(message):
 
         messageoper = None
 
-        if "+" in message.content or "-" in message.content:
+        if "+" in message.content or "-" in message.content: 
             messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
-            messagesplit = (message.content.split("/roll")[1]).split("+")[0]
+            messagesplit = (message.content.split("/roll")[1]).split("+")[1]
         else:
             messagesplit = (message.content.split("/roll")[1])
         droll = dice.roll(messagesplit)
@@ -43,5 +43,17 @@ async def on_message(message):
             drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
 
         await channel.send(drollresult)
-        
+
+def dice_roll_multi(self, arr_dicerolls):
+    pass
+
+def dice_roll_basic(self, diceroll):
+    pass
+
+def sanitize_input(self, inputs):
+    # Return a message if the input is not valid
+    pass
+
+# Work on exception catching
+
 client.run(TOKEN)

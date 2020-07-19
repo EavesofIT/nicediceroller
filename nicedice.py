@@ -43,5 +43,14 @@ async def on_message(message):
             drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
 
         await channel.send(drollresult)
-        
+
+def parse_multi_dice(self, arr_dicerolls):
+    pass
+
+def sanitize_input(self, inputs):
+    # Return a message if the input is not valid
+    pass
+
+# Work on exception catching
+
 client.run(TOKEN)

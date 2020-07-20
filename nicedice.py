@@ -18,43 +18,43 @@ client = discord.Client()
 async def on_message(message):
     if message.content.startswith('/roll'):
         channel = message.channel
-        await channel.send('Rolling dem dice!')
 
         if "help" in message.content or "-h" in message.content:
             help = dice_help()
             await channel.send(help)
-            return
-
-        messageoper = None
-
-        if "+" in message.content or "-" in message.content: 
-            messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
-            messagesplit = (message.content.split("/roll")[1]).split("+")[1]
         else:
-            messagesplit = (message.content.split("/roll")[1])
+            await channel.send('Rolling dem dice!')
 
-        try:
-            droll = dice.roll(messagesplit)
-        except dice.DiceBaseException as e:
-            print(e.pretty_print())
+            messageoper = None
 
-        if isinstance(droll, list):
-            drollsum = sum(droll)
-            drollresult = drollsum
-        else:
-            drollresult = droll
-            
-        if "-" in message.content:
-            drollsum = drollresult - int(messagesplit[1])
-        elif "+" in message.content:
-            drollsum = drollresult + int(messagesplit[1])
+            if "+" in message.content or "-" in message.content: 
+                messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
+                messagesplit = (message.content.split("/roll")[1]).split("+")[1]
+            else:
+                messagesplit = (message.content.split("/roll")[1])
 
-        if "+" in message.content or "-" in message.content:
-            drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
-        else:
-            drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
+            try:
+                droll = dice.roll(messagesplit)
+            except dice.DiceBaseException as e:
+                await channel.send()
 
-        await channel.send(drollresult)
+            if isinstance(droll, list):
+                drollsum = sum(droll)
+                drollresult = drollsum
+            else:
+                drollresult = droll
+                
+            if "-" in message.content:
+                drollsum = drollresult - int(messagesplit[1])
+            elif "+" in message.content:
+                drollsum = drollresult + int(messagesplit[1])
+
+            if "+" in message.content or "-" in message.content:
+                drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
+            else:
+                drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
+
+            await channel.send(drollresult)
 
 def dice_help():
     help = "/roll can be used to roll multiple many styles of roll such as 1d6, 1d6+2, DL, body part, etc"

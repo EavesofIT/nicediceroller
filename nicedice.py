@@ -22,7 +22,8 @@ async def on_message(message):
 
         if "help" in message.content or "-h" in message.content:
             help = dice_help()
-            await channel.send(help) 
+            await channel.send(help)
+            return
 
         messageoper = None
 
@@ -32,7 +33,10 @@ async def on_message(message):
         else:
             messagesplit = (message.content.split("/roll")[1])
 
-        droll = dice.roll(messagesplit)
+        try:
+            droll = dice.roll(messagesplit)
+        except dice.DiceBaseException as e:
+            print(e.pretty_print())
 
         if isinstance(droll, list):
             drollsum = sum(droll)

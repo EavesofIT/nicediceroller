@@ -22,7 +22,6 @@ async def on_message(message):
         if "help" in message.content or "-h" in message.content:
             help = dice_help()
             await channel.send(help)
-            return
         else:
             await channel.send('Rolling dem dice!')
 
@@ -34,10 +33,16 @@ async def on_message(message):
             else:
                 messagesplit = (message.content.split("/roll")[1])
 
+            #get_droll = dice_roll_basic(messagesplit)
+            #if get_droll[1] == 1:
+            #    await channel.send(get_droll[0])
+            #    return
+            #droll = get_droll[0]
             try:
                 droll = dice.roll(messagesplit)
             except dice.DiceBaseException as e:
-                await channel.send()
+                await channel.send(e)
+                return
 
             if isinstance(droll, list):
                 drollsum = sum(droll)
@@ -64,8 +69,12 @@ def dice_help():
 def dice_roll(self, arr_dicerolls):
     pass
 
-def dice_roll_basic(self, diceroll):
-    pass
+def dice_roll_basic(self, messagesplit):
+    try:
+        droll = dice.roll(messagesplit)
+        return droll, 0
+    except dice.DiceBaseException as e:
+        return e, 1
 
 def dice_roll_dl():
     pass

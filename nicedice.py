@@ -22,6 +22,7 @@ async def on_message(message):
         if "help" in message.content or "-h" in message.content:
             help = dice_help()
             await channel.send(help)
+            return
         else:
             await channel.send('Rolling dem dice!')
 
@@ -57,7 +58,7 @@ async def on_message(message):
             await channel.send(drollresult)
 
 def dice_help():
-    help = "/roll can be used to roll multiple many styles of roll such as 1d6, 1d6+2, DL, body part, etc"
+    help = "The roll command can be used to roll multiple styles of roll such as 1d6, 1d6+2, DL, body part, etc"
     return help
 
 def dice_roll(self, arr_dicerolls):

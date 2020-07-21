@@ -28,6 +28,10 @@ async def on_message(message):
             messageoper = None
 
             if "+" in message.content or "-" in message.content: 
+                #get_droll = dice_roll_multi(message)
+                #if get_droll[1] == 1:
+                #    await channel.send(get_droll[0])
+                #    return
                 messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
                 messagesplit = (message.content.split("/roll")[1]).split("+")[1]
             else:
@@ -66,8 +70,28 @@ def dice_help():
     help = "The roll command can be used to roll multiple styles of roll such as 1d6, 1d6+2, DL, body part, etc"
     return help
 
-def dice_roll(self, arr_dicerolls):
-    pass
+def dice_roll_multi(message):
+    messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
+    messagesplit = (message.content.split("/roll")[1]).split("+")[1]
+
+
+    get_droll = dice_roll_basic(messagesplit)
+    if get_droll[1] == 1:
+        return get_droll
+    droll = get_droll[0]
+
+    if isinstance(droll, list):
+        drollsum = sum(droll)
+        drollresult = drollsum
+    else:
+        drollresult = droll
+
+    if "-" in message.content:
+        drollsum = drollresult - int(messagesplit[1])
+    elif "+" in message.content:
+        drollsum = drollresult + int(messagesplit[1])
+
+    drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
 
 def dice_roll_basic(self, messagesplit):
     try:

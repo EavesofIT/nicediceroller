@@ -1,4 +1,12 @@
 {
-    "Body" : ["arm","leg","foot","crotch","head","shoulder"],
-    "DL" : ["Tiny", "Small", "Average", "Big", "HUGE"]
+    "body" : ["arm","leg","foot","crotch","head","shoulder"],
+    "DL" : ["Tiny", "Small", "Average", "Big", "HUGE"],
+    "DL_race" : {
+        "halfing" : "1d4",
+        "gnome" : "2d4",
+        "half-orc" : "3d4+2",
+        "half-elf" : "3d4-2",
+        "elf" : "2d4",
+        "human" : "3d4"
+    }
 }

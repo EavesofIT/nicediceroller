@@ -13,59 +13,65 @@ from dotenv import load_dotenv
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-def dice_roll(self, message):
-    messageoper = None
-    messagesplit = None
-
+def dice_roll(message):
     if "+" in message.content or "-" in message.content:
-        dice_roll_multi()
+        droll = dice_roll_multi()
+        return droll
     elif "DL" in message.content:
         with open('model/dicerolltypes.json') as rolltypes:
             rolltypedata = json.load(rolltypes)
-        drollboyddice = dice_roll_body(message,rolltypedata["DL"])
-        return drollboyddice
-    elif "body" in message.content:
+        drollbodydice = dice_roll_body(message,rolltypedata["DL"])
+        return drollbodydice
+    elif "body" in message.content.lower():
         with open('model/dicerolltypes.json') as rolltypes:
             rolltypedata = json.load(rolltypes)
-        drollboyddice = dice_roll_body(message, rolltypedata["body"])
-        return drollboyddice
+        drollbodydice = dice_roll_body(message, rolltypedata["body"])
+        return drollbodydice
     else:
-        droll = dice_roll_basic()
-
-    messagesplit, messageoper = get_roll_type(message)
-
-    # Roll using the dice module    
-    droll = dice.roll(messagesplit)
-
-    # Handle the output
-    if isinstance(droll, list):
-        drollsum = sum(droll)
-        drollresult = drollsum
-    else:
-        drollresult = droll
-    if "-" in message.content:
-        drollsum = drollresult - int(messagesplit[1])
-    elif "+" in message.content:
-        drollsum = drollresult + int(messagesplit[1])
-    if "+" in message.content or "-" in message.content:
-        drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
-    else:
-        drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
-
-    return drollresult
+        droll = dice_roll_basic(message)
+        return droll
 
 def dice_roll_multi(self, arr_dicerolls):
     pass
 
-def dice_roll_basic(self, diceroll):
-    pass
+def dice_roll_basic(message):
 
-def dice_roll_body(self, bodydice):
+    messageoper = None
+    messagesplit = None
+
+    messagesplit, messageoper = get_roll_type(message)
+
+    # Roll using the dice module   
+    
+    try:
+        droll = dice.roll(messagesplit)
+    except dice.DiceBaseException as e:
+        return e
+
+    # Handle the output
+    if isinstance(droll, list):
+        drollsum = sum(droll)
+        drollresult = drollsum
+    else:
+        drollresult = droll
+
+    if "-" in message.content:
+        drollsum = drollresult - int(messagesplit[1])
+    elif "+" in message.content:
+        drollsum = drollresult + int(messagesplit[1])
+    if "+" in message.content or "-" in message.content:
+        drollresult = "You rolled " + str(droll) + " " + str(messageoper.group()) + " " + messagesplit[1] + " = " + str(drollsum)
+    else:
+        drollresult = "You rolled " + str(droll) + " = " + str(drollsum)
+
+    return drollresult
+
+def dice_roll_body(message, bodydice):
     droll = dice.roll("1d" + str(len(bodydice)))[0]
     bodypart = bodydice[droll]
     return bodypart
 
-def get_dice_result(self, droll, message):
+def get_dice_result(droll, message):
     # Handle the output
     if isinstance(droll, list):
         drollsum = sum(droll)
@@ -83,7 +89,7 @@ def get_dice_result(self, droll, message):
 
     return drollresult
 
-def get_roll_type(self, message):
+def get_roll_type(message):
     if "+" in message.content or "-" in message.content: 
         messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
         messagesplit = (message.content.split("/roll")[1]).split("+")[1]
@@ -93,7 +99,7 @@ def get_roll_type(self, message):
 
     return messagesplit, messageoper
 
-def get_requested_dice(self, message):
+def get_requested_dice(message):
     if "+" in message.content or "-" in message.content: 
         messageoper = re.search("[\-\+]", message.content.split("/roll")[1])
         messagesplit = (message.content.split("/roll")[1]).split("+")[1]
@@ -106,7 +112,7 @@ def get_requested_dice(self, message):
 def dice_roll_math(self):
     pass
 
-def sanitize_input(self, inputs):
+def sanitize_input(inputs):
     # Return a message if the input is not valid
     pass
 

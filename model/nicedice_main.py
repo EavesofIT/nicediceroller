@@ -21,7 +21,7 @@ async def on_message(message):
         channel = message.channel
         await channel.send('Rolling dem dice!')
 
-        #drollresult = nicedice.dice_roll(message)
+        drollresult = nicedice.dice_roll(message)
 
         await channel.send(drollresult)
 
